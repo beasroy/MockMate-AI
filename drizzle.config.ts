@@ -1,10 +1,16 @@
 import { defineConfig } from 'drizzle-kit';
+import { config } from 'dotenv';
+import { resolve } from 'path';
+
+
+config({ path: resolve(__dirname, '.env.local') });
+
 
 export default defineConfig({
   schema: "./utils/schema.ts",
   dialect: 'postgresql',
   dbCredentials: {
-    url: "postgresql://ai-interview_owner:vmJa6cRl8Oug@ep-sweet-limit-a1ahkvxa.ap-southeast-1.aws.neon.tech/ai-interview?sslmode=require", 
+    url: process.env.NEXT_PUBLIC_DRIZZLE_DATABASE_URL!,
   },
   verbose: true,
   strict: true,
