@@ -13,7 +13,7 @@ const MarketingPage = () => {
   return (
     <div className="relative flex items-center justify-center flex-col px-4 md:px-0">
       <div className={cn("flex items-center justify-center flex-col", textFont.className)}>
-        <h1 className="text-xl md:text-4xl text-center text-sky-800 font-bold mb-4">
+        <h1 className="text-xl md:text-4xl text-center text-white font-bold mb-4">
           MockMate AI: Perfect Practice for Perfect Performance
         </h1>
       </div>
@@ -31,7 +31,7 @@ const MarketingPage = () => {
         alt="Description"
         width={750}
         height={300}
-        className="mt-6 rounded-xl shadow-lg border-2 border-blue-500"
+        className="mt-6 rounded-xl shadow-lg border-4 border-slate-500"
       />
 
     </div>

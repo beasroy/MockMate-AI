@@ -11,7 +11,7 @@ export const Logo = () =>{
         <Link href={"/"}>
         <div className="hover:opacity-75 transition items-center gap-x-2 flex">
                 <Image src={"/logo1.png"} alt="logo" width={30} height={30}/>
-                <p className={cn("pb-1 text-neutral-700 text-xl",headingFont.className)}>MockMate AI</p>
+                <p className={cn("pb-1 text-white text-xl",headingFont.className)}>MockMate AI</p>
         </div>
         </Link>
     )
