@@ -1,12 +1,14 @@
+import { Footer } from "@/app/(marketing)/_components/footer";
 import { Navbar } from "./_components/navbar"
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className="h-full bg-slate-100">
+        <div className="bg-slate-100">
             <Navbar />
-            <div className="relative pt-20 md:pt-14 mx-5 md:mx-20 lg:mx-28">
+            <div className="pt-16 md:pt-14 mx-5 md:mx-20 lg:mx-32">
                 {children}
             </div>
+            <Footer />
         </div>
     )
 }
