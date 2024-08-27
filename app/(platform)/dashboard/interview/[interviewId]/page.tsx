@@ -77,6 +77,7 @@ const Interview = ({ params }: InterviewProps) => {
                         onUserMedia={() => setWebcamEnabled(true)}
                         mirrored={true}
                         className='md:mt-5'
+                        
                     />
                     <Button variant="ghost" onClick={() => setWebcamEnabled(false)} className='w-full text-center mt-5'>Disable webcam and microphone</Button>
                     </>

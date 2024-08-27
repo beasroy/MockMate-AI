@@ -1,4 +1,4 @@
-import { LightbulbIcon } from "lucide-react";
+import { LightbulbIcon, Volume2 } from "lucide-react";
 import { config } from "dotenv";
 import { resolve } from "path";
 
@@ -22,6 +22,15 @@ const Question: React.FC<QuestionProps> = ({ mockInterviewQuestion, activeQuesti
     activeQuestionIndex >= 0 && 
     activeQuestionIndex < mockInterviewQuestion.length;
 
+  const textToSpeech=(text:string)=>{
+    if('speechSynthesis' in window){
+      const speech = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(speech);
+    }else{
+      alert("sorry your browser doesn't support text to speech")
+    }
+  }
+
   return (
     isQuestionValid && (
       <div className='p-5 shadow-md border rounded-lg my-10'>
@@ -34,9 +43,10 @@ const Question: React.FC<QuestionProps> = ({ mockInterviewQuestion, activeQuesti
             </div>
           ))}
         </div>
-
+   
         <h2 className="my-5 text-base md:text-lg">{mockInterviewQuestion[activeQuestionIndex].question}</h2>
-
+        <Volume2 className="cursor-pointer" onClick={()=>textToSpeech(mockInterviewQuestion[activeQuestionIndex].question)} />
+    
         <div className="border rounded-lg bg-blue-100 text-primary p-5 mt-16">
           <h2 className="flex items-center gap-2">
             <LightbulbIcon />
