@@ -53,7 +53,7 @@ const startInterview = ({params}:InterviewProps) => {
     };
   return  mockInterviewQuestion &&(
     <div>
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10 md:my-8'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-10 md:my-5'>
  
             {/* QUESTION*/}
              <Question 
@@ -68,7 +68,7 @@ const startInterview = ({params}:InterviewProps) => {
        interviewData={interviewData}/>
 
         </div>
-        <div className='flex flex-col items-center  md:flex-row justify-center md:justify-end gap-4 mt-4 mb-6'>
+        <div className='flex flex-col items-center  md:flex-row justify-center md:justify-end gap-4'>
              
                     {activeQuestionIndex > 0 &&<Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex-1)}>Previous Question</Button>}
                     {activeQuestionIndex !== mockInterviewQuestion?.length-1 &&<Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex+1)}>Next Question</Button>}

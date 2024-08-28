@@ -33,11 +33,11 @@ const Question: React.FC<QuestionProps> = ({ mockInterviewQuestion, activeQuesti
 
   return (
     isQuestionValid && (
-      <div className='p-5 shadow-md border rounded-lg my-10'>
+      <div className='p-5 shadow-md border rounded-lg my-10 '>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {mockInterviewQuestion.map((question, index) => (
             <div key={index}>
-              <h2 onClick={()=>setActiveQuestionIndex(index)} className={`rounded-full p-2 text-center text-xs md:text-sm cursor-pointer ${activeQuestionIndex === index ? 'bg-primary text-white' : 'bg-white text-black'}`}>
+              <h2 onClick={()=>setActiveQuestionIndex(index)} className={`rounded-full p-2 text-center text-xs md:text-sm cursor-pointer ${activeQuestionIndex === index ? 'bg-primary text-white' : 'bg-slate-100 text-black'}`}>
                 Question #{index + 1}
               </h2>
             </div>

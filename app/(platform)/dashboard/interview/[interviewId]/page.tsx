@@ -83,7 +83,7 @@ const Interview = ({ params }: InterviewProps) => {
                     </>
                 ) : (
                     <>
-                        <WebcamIcon className="h-48 md:h-72 w-full bg-white my-4 p-16 md:p-20 rounded-xl border-2" />
+                        <WebcamIcon className="h-48 md:h-72 w-full bg-slate-50 my-4 p-16 md:p-20 rounded-xl border-2" />
                         <Button variant="ghost" onClick={() => setWebcamEnabled(true)} className='w-full text-center'>Enable webcam and microphone</Button>
                     </>
                 )}

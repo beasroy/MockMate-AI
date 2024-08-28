@@ -1,4 +1,3 @@
-
 import { db } from '@/utils/db';
 import { UserAnswers } from '@/utils/schema';
 import moment from 'moment';
@@ -18,21 +17,30 @@ export async function saveUserAnswer({
     userEmail: string;
 }) {
     try {
-       
-        const feedbackPrompt =  `Question: ${question}, User Answer: ${userAns} Depends on question and user answer for given interview question.Please give us rating for answer and feedback as area of improvement if any in just 3 to 5 lines to improve it in JSON format with rating field and feedback field`;
+        // Generate feedback prompt for the AI
+        const feedbackPrompt = `Question: ${question}, User Answer: ${userAns}. Please rate the answer on a scale of 1 to 5 and provide feedback on areas for improvement in 3 to 5 lines in JSON format with fields 'rating' and 'feedback'.`;
         const feedback = await chatSession.sendMessage(feedbackPrompt);
+        
         const feedbackText = await feedback.response.text();
-
-        
         const cleanText = feedbackText.replace(/```json/, "").replace(/```/, "").trim();
-        const parsedFeedbackJson = JSON.parse(cleanText);
-
         
+        let parsedFeedbackJson;
 
-        if (!parsedFeedbackJson.rating || !parsedFeedbackJson.feedback) {
-            return { success: false, message: 'Invalid AI feedback format' };
+        // Try parsing the AI response as JSON
+        try {
+            parsedFeedbackJson = JSON.parse(cleanText);
+        } catch (error) {
+            console.error('Error parsing AI feedback as JSON:', error);
+            return { success: false, message: 'Invalid AI feedback format (JSON parse error)' };
         }
 
+        // Validate the parsed JSON structure
+        if (!parsedFeedbackJson || typeof parsedFeedbackJson.rating !== 'number' || typeof parsedFeedbackJson.feedback !== 'string') {
+            console.error('AI feedback is missing expected fields:', parsedFeedbackJson);
+            return { success: false, message: 'Invalid AI feedback format (Missing fields)' };
+        }
+
+        // Insert the user's answer and AI feedback into the database
         await db.insert(UserAnswers).values({
             mockIdRef: mockId,
             question,
@@ -41,9 +49,8 @@ export async function saveUserAnswer({
             feedback: parsedFeedbackJson.feedback,
             rating: parsedFeedbackJson.rating,
             userEmail,
-            createdAt: moment().format("DD-MM-YYYY"),
+            createdAt: moment().format('DD-MM-YYYY'),
         });
-
 
         return { success: true, message: 'User answer recorded successfully' };
     } catch (error) {

@@ -42,7 +42,7 @@ const AddNewInterview = () => {
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         setLoading(true);
         e.preventDefault();
-
+    
         const InputPrompt =
             "Job position: " +
             jobPosition +
@@ -52,33 +52,41 @@ const AddNewInterview = () => {
             jobExp +
             ", Based on this information please give me " +
             process.env.NEXT_PUBLIC_INTERVIEW_QUESTION_COUNT +
-            " interview questions with answers in JSON format.";
-
+            " interview questions with answers in JSON format.where there will be two fields question and answer.";
+    
         try {
             const result = await chatSession.sendMessage(InputPrompt);
-            const responseText = result.response.text();
-           
-            if(!responseText){
-                console.log("response not generated")
+            const responseText = await result.response.text();
+    
+          
+    
+            if (!responseText) {
+                console.error("No response generated from AI");
+                setLoading(false);
+                return;
             }
-            const cleanText = responseText
-                .replace(/```json/, "")
-                .replace(/```/, "")
-                .trim();
+    
            
+            let cleanText = responseText
+                .replace(/```json/, "")  // Remove markdown json code block
+                .replace(/```/, "")      // Remove ending code block markers
+                .trim();
+    
+           
+    
 
-            
-            const correctedText = cleanText.endsWith("```")
-                ? cleanText.slice(0, -3).trim()
-                : cleanText;
-
-            
-
-            const parsedJson = JSON.parse(correctedText);
-            
-
+    
+            let parsedJson;
+            try {
+                parsedJson = JSON.parse(cleanText);  
+            } catch (parseError) {
+                console.error("Error parsing JSON:", parseError);
+                setLoading(false);
+                return;
+            }
+    
             setJsonResp(parsedJson);
-
+    
             const userEmail = user?.primaryEmailAddress?.emailAddress || "default@example.com";
             if (parsedJson) {
                 try {
@@ -94,11 +102,11 @@ const AddNewInterview = () => {
                             createdAt: moment().format("DD-MM-YYYY"),
                         })
                         .returning({ mockId: MockInterview.mockId });
-
+    
                     console.log("Inserted Mock ID:", resp[0]?.mockId);
-                    if(resp){
+                    if (resp) {
                         setOpenDialog(false);
-                        router.push("/dashboard/interview/"+resp[0]?.mockId)
+                        router.push("/dashboard/interview/" + resp[0]?.mockId);
                     }
                 } catch (error) {
                     console.error("Error inserting data:", error);
@@ -109,9 +117,10 @@ const AddNewInterview = () => {
         } catch (error) {
             console.error("Error processing the response:", error);
         }
-
+    
         setLoading(false);
     };
+    
 
     const handleJobPositionChange = (event: ChangeEvent<HTMLInputElement>) => {
         setJobPosition(event.target.value);

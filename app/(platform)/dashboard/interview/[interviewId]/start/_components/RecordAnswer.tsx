@@ -46,6 +46,7 @@ const RecordAnswer: React.FC<RecordAnsProps> = ({ mockInterviewQuestion, activeQ
         interimResult,
         isRecording,
         results,
+        setResults,
         startSpeechToText,
         stopSpeechToText,
     } = useSpeechToText({
@@ -79,7 +80,6 @@ const RecordAnswer: React.FC<RecordAnsProps> = ({ mockInterviewQuestion, activeQ
             return;
         }
 
-        // Use startTransition to avoid blocking the UI
         startTransition(() => {
             saveUserAnswer({
                 mockId: interviewData.mockId,
@@ -90,6 +90,8 @@ const RecordAnswer: React.FC<RecordAnsProps> = ({ mockInterviewQuestion, activeQ
             }).then((response) => {
                 if (response.success) {
                     toast(response.message);
+                    setResults([]); 
+                    setUserAnswer('');  
                 } else {
                     toast.error(response.message);
                 }
